@@ -14,6 +14,8 @@ public class Calculator {
 	}
 	
 	public double div(double a, double b) {
+		if (b == 0) throw new ArithmeticException("by 0");
 		return redondea(a/b);
 	}
+	
 }
