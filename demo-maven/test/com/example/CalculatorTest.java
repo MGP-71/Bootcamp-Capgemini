@@ -41,7 +41,6 @@ class CalculatorTest {
 			@DisplayName("Sumar dos enteros")
 			void testAdd1() {
 				assertEquals(calculator.add(1, 2), 3);
-				assertEquals(calculator.add(1, 2), 4);
 			}
 			
 			@Test
