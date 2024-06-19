@@ -1,5 +1,5 @@
 
-                   ![logonlogo](https://github.com/MGP-71/Bootcamp-Capgemini/assets/149084230/a39d1205-9a19-43c9-ba09-1cae129feb58)
-                     
+![logonlogo](https://github.com/MGP-71/Bootcamp-Capgemini/assets/149084230/af68a60c-093d-45a7-bc71-5a321d511332)
+
 
 Repositorio donde se recogerá todo el progreso realizado en el Bootcamp de Capgemini en desarrollo en java del 17jun-17jul
