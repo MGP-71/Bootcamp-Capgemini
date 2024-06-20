@@ -218,7 +218,7 @@ class GildedRoseTest {
     @DisplayName("Meter varios Items Conjurados con valores adecuados sin fallos")
     void ItemsNormalesConjurados() {
         Item[] items = new Item[] { new Item("Conjured Pato", 12, 23),  new Item("Conjured Rana", 13, 42),
-        		new Item("Conjured Paloma", 6, 13), new Item("Conjured Cocodrilo", 3, 32)};
+        		new Item("Conjured Paloma", 6, 13), new Item("Conjured Cocodrilo", 0, 32)};
         
         GildedRose gr = new GildedRose(items);
         
@@ -234,8 +234,8 @@ class GildedRoseTest {
         		() -> assertEquals(5, items[2].sellIn),
         		() -> assertEquals(11, items[2].quality),
         		() -> assertEquals("Conjured Cocodrilo", items[3].name),
-        		() -> assertEquals(2, items[3].sellIn),
-        		() -> assertEquals(30, items[3].quality)
+        		() -> assertEquals(-1, items[3].sellIn),
+        		() -> assertEquals(28, items[3].quality)
         		);
     }
 }
