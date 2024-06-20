@@ -1,5 +1,5 @@
 
-![logonlogo](https://github.com/MGP-71/Bootcamp-Capgemini/assets/149084230/af68a60c-093d-45a7-bc71-5a321d511332)
+![logo-asociados-capgemini](https://github.com/MGP-71/Bootcamp-Capgemini/assets/149084230/7d6adb8f-564e-49ab-a267-bcc1b650f2d8)
 
 
 Repositorio donde se recogerá todo el progreso realizado en el Bootcamp de Capgemini en desarrollo en java enfocado en Spring Boot y Angular del 17jun-17jul
