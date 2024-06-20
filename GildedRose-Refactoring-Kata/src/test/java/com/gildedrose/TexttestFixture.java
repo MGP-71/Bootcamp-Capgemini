@@ -1,7 +1,9 @@
 package com.gildedrose;
 
+import javax.naming.InvalidNameException;
+
 public class TexttestFixture {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidNameException {
         System.out.println("OMGHAI!");
 
         Item[] items = new Item[] {

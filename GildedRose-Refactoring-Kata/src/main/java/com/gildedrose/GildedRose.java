@@ -1,10 +1,24 @@
 package com.gildedrose;
 
+import javax.naming.InvalidNameException;
+
 class GildedRose {
 	Item[] items;
 
-	public GildedRose(Item[] items) {
+	public GildedRose(Item[] items) throws InvalidNameException {
+		if (items == null)
+			throw new IllegalArgumentException("Item list is null");
 		this.items = items;
+		for (Item item : items) {
+			if (item.name == null)
+				throw new InvalidNameException("Nombre del item nulo");
+			if (item.name.trim().isBlank())
+				throw new InvalidNameException("Nombre en blanco no válido");
+			if (item.quality < 0)
+				throw new IllegalArgumentException("Quality under 0");
+			if (item.quality > 50 && !item.name.equals("Sulfuras, Hand of Ragnaros"))
+				throw new IllegalArgumentException("Sell in above 50");
+		}
 	}
 
 	public void updateQuality() {
