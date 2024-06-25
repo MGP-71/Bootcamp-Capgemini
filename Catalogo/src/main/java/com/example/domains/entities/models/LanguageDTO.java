@@ -14,13 +14,13 @@ public class LanguageDTO implements Serializable {
 	@JsonProperty("id")
 	private int languageId;
 	@JsonProperty("name")
-	private String languageName;
+	private String name;
 
 	public static LanguageDTO from(Language source) {
 		return new LanguageDTO(source.getLanguageId(), source.getName());
 	}
 
 	public static Language from(LanguageDTO source) {
-		return new Language(source.getLanguageId(), source.getLanguageName());
+		return new Language(source.getLanguageId(), source.getName());
 	}
 }

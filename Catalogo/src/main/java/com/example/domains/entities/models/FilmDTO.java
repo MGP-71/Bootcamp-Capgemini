@@ -14,13 +14,13 @@ public class FilmDTO implements Serializable {
 	@JsonProperty("id")
 	private int filmId;
 	@JsonProperty("title")
-	private String filmTitle;
+	private String title;
 
 	public static FilmDTO from(Film source) {
 		return new FilmDTO(source.getFilmId(), source.getTitle());
 	}
 
 	public static Film from(FilmDTO source) {
-		return new Film(source.getFilmId(), source.getFilmTitle());
+		return new Film(source.getFilmId(), source.getTitle());
 	}
 }
