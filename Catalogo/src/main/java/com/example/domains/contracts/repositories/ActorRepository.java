@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.example.domains.core.contracts.repositories.RepositoryWithProjections;
 import com.example.domains.entities.Actor;
-import com.example.domains.entities.models.ActorDTO;
 
 public interface ActorRepository
 		extends JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor>, RepositoryWithProjections {
@@ -24,8 +23,6 @@ public interface ActorRepository
 
 	@Query(value = "SELECT * FROM actor WHERE actor_id >= :id", nativeQuery = true)
 	List<Actor> findBySQL(int id);
-
-	List<ActorDTO> readByActorIdGreaterThanEqual(int actorId);
 
 	<T> List<T> findByActorIdGreaterThanEqual(int actorId, Class<T> proyeccion);
 
