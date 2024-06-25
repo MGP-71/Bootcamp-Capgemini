@@ -5,5 +5,5 @@ import com.example.domains.entities.Actor;
 
 public interface ActorService extends ProjectionDomainService<Actor, Integer> {
 	void repartePremios();
-	
+
 }

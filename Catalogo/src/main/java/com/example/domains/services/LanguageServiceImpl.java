@@ -8,18 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.domains.contracts.repositories.FilmRepository;
-import com.example.domains.contracts.services.FilmService;
-import com.example.domains.entities.Film;
+import com.example.domains.contracts.repositories.LanguageRepository;
+import com.example.domains.contracts.services.LanguageService;
+import com.example.domains.entities.Language;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 @Service
-public class FilmServiceImpl implements FilmService {
-	private FilmRepository dao;
+public class LanguageServiceImpl implements LanguageService {
+	private LanguageRepository dao;
 
-	public FilmServiceImpl(FilmRepository dao) {
+	public LanguageServiceImpl(LanguageRepository dao) {
 		this.dao = dao;
 	}
 
@@ -39,49 +39,49 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public Iterable<Film> getAll(Sort sort) {
+	public Iterable<Language> getAll(Sort sort) {
 		return dao.findAll(sort);
 	}
 
 	@Override
-	public Page<Film> getAll(Pageable pageable) {
+	public Page<Language> getAll(Pageable pageable) {
 		return dao.findAll(pageable);
 	}
 
 	@Override
-	public List<Film> getAll() {
+	public List<Language> getAll() {
 		return dao.findAll();
 	}
 
 	@Override
-	public Optional<Film> getOne(Integer id) {
+	public Optional<Language> getOne(Integer id) {
 		return dao.findById(id);
 	}
 
 	@Override
-	public Film add(Film item) throws DuplicateKeyException, InvalidDataException {
+	public Language add(Language item) throws DuplicateKeyException, InvalidDataException {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if (item.getFilmId() != 0 && dao.existsById(item.getFilmId()))
+		if (item.getLanguageId() != 0 && dao.existsById(item.getLanguageId()))
 			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
 	@Override
-	public Film modify(Film item) throws NotFoundException, InvalidDataException {
+	public Language modify(Language item) throws NotFoundException, InvalidDataException {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if (dao.existsById(item.getFilmId()))
+		if (dao.existsById(item.getLanguageId()))
 			throw new NotFoundException();
 		return dao.save(item);
 	}
 
 	@Override
-	public void delete(Film item) throws InvalidDataException {
+	public void delete(Language item) throws InvalidDataException {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		dao.delete(item);
@@ -91,4 +91,5 @@ public class FilmServiceImpl implements FilmService {
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
 	}
+
 }
