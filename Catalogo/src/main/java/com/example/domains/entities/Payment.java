@@ -6,45 +6,44 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the payment database table.
  * 
  */
 @Entity
-@Table(name="payment")
-@NamedQuery(name="Payment.findAll", query="SELECT p FROM Payment p")
+@Table(name = "payment")
+@NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p")
 public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="payment_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "payment_id", unique = true, nullable = false)
 	private int paymentId;
 
-	@Column(nullable=false, precision=10, scale=2)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal amount;
 
-	@Column(name="last_update")
+	@Column(name = "last_update")
 	private Timestamp lastUpdate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="payment_date", nullable=false)
+	@Column(name = "payment_date", nullable = false)
 	private Date paymentDate;
 
-	//bi-directional many-to-one association to Customer
+	// bi-directional many-to-one association to Customer
 	@ManyToOne
-	@JoinColumn(name="customer_id", nullable=false)
+	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	//bi-directional many-to-one association to Rental
+	// bi-directional many-to-one association to Rental
 	@ManyToOne
-	@JoinColumn(name="rental_id")
+	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
-	//bi-directional many-to-one association to Staff
+	// bi-directional many-to-one association to Staff
 	@ManyToOne
-	@JoinColumn(name="staff_id", nullable=false)
+	@JoinColumn(name = "staff_id", nullable = false)
 	private Staff staff;
 
 	public Payment() {

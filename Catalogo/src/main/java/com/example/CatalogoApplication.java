@@ -5,8 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.domains.contracts.services.ActorService;
-import com.example.domains.entities.models.ActorDTO;
+import com.example.domains.contracts.services.FilmService;
+import com.example.domains.entities.models.FilmDTO;
 
 @SpringBootApplication
 public class CatalogoApplication implements CommandLineRunner {
@@ -16,12 +16,12 @@ public class CatalogoApplication implements CommandLineRunner {
 	}
 
 	@Autowired
-	ActorService srv;
+	FilmService fsr;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.err.println("Aplicación arrancada...");
-		srv.getByProjection(ActorDTO.class).forEach(System.out::println);
+		fsr.getByProjection(FilmDTO.class).forEach(System.out::println);
 	}
 
 }

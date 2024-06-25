@@ -17,9 +17,11 @@ import jakarta.validation.Payload;
 @Documented
 public @interface NIF {
 	String message() default "{validation.NIF.message}";
+
 	Class<?>[] groups() default {};
+
 	Class<? extends Payload>[] payload() default {};
-	
+
 	class Validator implements ConstraintValidator<NIF, String> {
 		@Override
 		public boolean isValid(String value, ConstraintValidatorContext context) {

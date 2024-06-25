@@ -5,45 +5,44 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-
 /**
  * The persistent class for the store database table.
  * 
  */
 @Entity
-@Table(name="store")
-@NamedQuery(name="Store.findAll", query="SELECT s FROM Store s")
+@Table(name = "store")
+@NamedQuery(name = "Store.findAll", query = "SELECT s FROM Store s")
 public class Store implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="store_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "store_id", unique = true, nullable = false)
 	private byte storeId;
 
-	@Column(name="last_update", nullable=false)
+	@Column(name = "last_update", nullable = false)
 	private Timestamp lastUpdate;
 
-	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="store")
+	// bi-directional many-to-one association to Customer
+	@OneToMany(mappedBy = "store")
 	private List<Customer> customers;
 
-	//bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy="store")
+	// bi-directional many-to-one association to Inventory
+	@OneToMany(mappedBy = "store")
 	private List<Inventory> inventories;
 
-	//bi-directional many-to-one association to Staff
-	@OneToMany(mappedBy="store")
+	// bi-directional many-to-one association to Staff
+	@OneToMany(mappedBy = "store")
 	private List<Staff> staffs;
 
-	//bi-directional many-to-one association to Address
+	// bi-directional many-to-one association to Address
 	@ManyToOne
-	@JoinColumn(name="address_id", nullable=false)
+	@JoinColumn(name = "address_id", nullable = false)
 	private Address address;
 
-	//bi-directional many-to-one association to Staff
+	// bi-directional many-to-one association to Staff
 	@ManyToOne
-	@JoinColumn(name="manager_staff_id", nullable=false)
+	@JoinColumn(name = "manager_staff_id", nullable = false)
 	private Staff staff;
 
 	public Store() {

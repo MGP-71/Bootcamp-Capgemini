@@ -11,7 +11,7 @@ import com.example.domains.core.contracts.repositories.RepositoryWithProjections
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.models.ActorDTO;
 
-public interface ActorRepository
+public interface CategoryRepository
 		extends JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor>, RepositoryWithProjections {
 	List<Actor> findTop5ByLastNameStartingWithOrderByFirstNameDesc(String prefijo);
 
