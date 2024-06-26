@@ -1,55 +1,70 @@
 package com.example.domains.entities;
 
 import java.io.Serializable;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+import com.example.domains.core.entities.EntityBase;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-import com.example.domains.core.entities.EntityBase;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 /**
  * The persistent class for the language database table.
  * 
  */
 @Entity
-@Table(name = "language")
-@NamedQuery(name = "Language.findAll", query = "SELECT l FROM Language l")
+@Table(name="language")
+@NamedQuery(name="Language.findAll", query="SELECT l FROM Language l")
 public class Language extends EntityBase<Language> implements Serializable {
 	private static final long serialVersionUID = 1L;
+    public static class Partial {}
+    public static class Complete extends Partial {}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "language_id", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="language_id")
+	@JsonProperty("id")
+	@JsonView(Language.Partial.class)
 	private int languageId;
 
-	@Column(name = "last_update", insertable = false, updatable = false, nullable = false)
-	private Timestamp lastUpdate;
-
-	@Column(nullable = false, length = 20)
+	@NotBlank
+	@Size(max=20)
+	@JsonProperty("idioma")
+	@JsonView(Language.Partial.class)
 	private String name;
 
-	// bi-directional many-to-one association to Film
-	@OneToMany(mappedBy = "language")
+	@Column(name="last_update", insertable = false, updatable = false)
+	@JsonView(Language.Complete.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonProperty("ultimaModificacion")
+	private Timestamp lastUpdate;
+
+	//bi-directional many-to-one association to Film
+	@OneToMany(mappedBy="language")
+	@JsonIgnore
 	private List<Film> films;
 
-	// bi-directional many-to-one association to Film
-	@OneToMany(mappedBy = "languageVO")
+	//bi-directional many-to-one association to Film
+	@OneToMany(mappedBy="languageVO")
+	@JsonIgnore
 	private List<Film> filmsVO;
 
 	public Language() {
 	}
 
-	public Language(int languageId, String name) {
-		super();
+	public Language(int languageId) {
+		this.languageId = languageId;
+	}
+
+	public Language(int languageId, @NotBlank @Size(max = 20) String name) {
 		this.languageId = languageId;
 		this.name = name;
 	}
@@ -131,17 +146,15 @@ public class Language extends EntityBase<Language> implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (obj instanceof Language o)
+			return languageId == o.languageId;
+		else
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Language other = (Language) obj;
-		return languageId == other.languageId;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Language [languageId=" + languageId + ", lastUpdate=" + lastUpdate + ", name=" + name + "]";
+		return "Language [languageId=" + languageId + ", name=" + name + "]";
 	}
 
 }

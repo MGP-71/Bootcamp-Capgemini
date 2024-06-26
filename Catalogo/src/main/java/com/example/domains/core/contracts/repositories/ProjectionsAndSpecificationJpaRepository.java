@@ -10,11 +10,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface ProjectionsAndSpecificationJpaRepository<E, ID>
-		extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
+public interface ProjectionsAndSpecificationJpaRepository<E, ID> 
+	extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
 	<T> List<T> findAllBy(Class<T> tipo);
-
 	<T> List<T> findAllBy(Sort orden, Class<T> tipo);
-
 	<T> Page<T> findAllBy(Pageable page, Class<T> tipo);
 }

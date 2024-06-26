@@ -1,57 +1,59 @@
 package com.example.domains.entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Objects;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 import com.example.domains.core.entities.EntityBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
+
 
 /**
  * The persistent class for the category database table.
  * 
  */
 @Entity
-@Table(name = "category")
-@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
+@Table(name="category")
+@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
 public class Category extends EntityBase<Category> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="category_id")
 	@JsonProperty("id")
 	private int categoryId;
 
-	@Column(name = "last_update", insertable = false, updatable = false, nullable = false)
+	@Column(name="last_update", insertable = false, updatable = false)
+	@PastOrPresent
 	@JsonIgnore
 	private Timestamp lastUpdate;
 
-	@Column(nullable = false, length = 25)
+	@NotBlank
+	@Size(max=25)
 	@JsonProperty("categoria")
 	private String name;
 
-	// bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy = "category")
+	//bi-directional many-to-one association to FilmCategory
+	@OneToMany(mappedBy="category")
 	@JsonIgnore
 	private List<FilmCategory> filmCategories;
 
 	public Category() {
 	}
 
-	public Category(int categoryId, String name) {
-		super();
+	public Category(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Category(int categoryId, @NotBlank @Size(max = 25) String name) {
 		this.categoryId = categoryId;
 		this.name = name;
 	}
@@ -111,17 +113,15 @@ public class Category extends EntityBase<Category> implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (obj instanceof Category o)
+			return categoryId == o.categoryId;
+		else
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Category other = (Category) obj;
-		return categoryId == other.categoryId;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [categoryId=" + categoryId + ", lastUpdate=" + lastUpdate + ", name=" + name + "]";
+		return "Category [categoryId=" + categoryId + ", name=" + name + ", lastUpdate=" + lastUpdate + "]";
 	}
 
 }

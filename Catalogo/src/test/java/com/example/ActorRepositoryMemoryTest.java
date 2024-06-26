@@ -1,4 +1,4 @@
-package com.example.domains.contracts.repositories;
+package com.example;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import com.example.core.test.Lentos;
+import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.entities.Actor;
 
 @DataJpaTest
@@ -35,7 +36,7 @@ class ActorRepositoryMemoryTest {
 		item.setLastUpdate(Timestamp.valueOf("2019-01-01 00:00:00"));
 		em.persist(item);
 	}
-	
+
 	@Test
 	void testGetAll_isNotEmpty() {
 		var rslt = dao.findAll();
@@ -51,7 +52,6 @@ class ActorRepositoryMemoryTest {
 		assertEquals("Pepito", item.get().getFirstName());
 	}
 
-	
 	@Test
 	void findBySQLTest() {
 		assertThat(dao.findBySQL(1).size()).isGreaterThan(0);

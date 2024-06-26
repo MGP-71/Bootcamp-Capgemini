@@ -13,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class EntityBase<E> {
 	private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-
+	
 	@Transient
 	@JsonIgnore
 	@SuppressWarnings("unchecked")
 	public Set<ConstraintViolation<E>> getErrors() {
-		return validator.validate((E) this);
+		return validator.validate((E)this);
 	}
 
 	@JsonIgnore
@@ -28,11 +28,10 @@ public abstract class EntityBase<E> {
 		if (lst.isEmpty())
 			return null;
 		Map<String, String> errors = new HashMap<>();
-		lst.stream().sorted((a, b) -> a.getPropertyPath().toString().compareTo(b.getPropertyPath().toString()))
-				.forEach(item -> errors.put(item.getPropertyPath().toString(),
-						(errors.containsKey(item.getPropertyPath().toString())
-								? errors.get(item.getPropertyPath().toString()) + ", "
-								: "") + item.getMessage()));
+		lst.stream().sorted((a,b)->(a.getPropertyPath().toString() + ":" + a.getMessage()).compareTo(b.getPropertyPath().toString() + ":" + b.getMessage()))
+			.forEach(item -> errors.put(item.getPropertyPath().toString(), 
+					(errors.containsKey(item.getPropertyPath().toString()) ? errors.get(item.getPropertyPath().toString()) + ", " : "") 
+					+ item.getMessage()));
 		return errors;
 	}
 
