@@ -10,4 +10,25 @@ Content-Type: text/xml
          <cal:op2>3</cal:op2>
       </cal:addRequest>
    </soapenv:Body>
+<soapenv:Body>
+      <cal:subRequest>
+         <cal:op1>2</cal:op1>
+         <cal:op2>3</cal:op2>
+      </cal:subRequest>
+   </soapenv:Body>
+<soapenv:Body>
+      <cal:mulRequest>
+         <cal:op1>2</cal:op1>
+         <cal:op2>3</cal:op2>
+      </cal:mulRequest>
+   </soapenv:Body>
+<soapenv:Body>
+      <cal:divRequest>
+         <cal:op1>2</cal:op1>
+         <cal:op2>3</cal:op2>
+      </cal:divRequest>
+   </soapenv:Body>
+
+
+
 </soapenv:Envelope>
