@@ -9,26 +9,60 @@ Content-Type: text/xml
          <cal:op1>2</cal:op1>
          <cal:op2>3</cal:op2>
       </cal:addRequest>
-   </soapenv:Body>
-<soapenv:Body>
+      
       <cal:subRequest>
          <cal:op1>2</cal:op1>
          <cal:op2>3</cal:op2>
       </cal:subRequest>
-   </soapenv:Body>
-<soapenv:Body>
+      
       <cal:mulRequest>
          <cal:op1>2</cal:op1>
          <cal:op2>3</cal:op2>
       </cal:mulRequest>
-   </soapenv:Body>
-<soapenv:Body>
+      
       <cal:divRequest>
          <cal:op1>2</cal:op1>
          <cal:op2>3</cal:op2>
       </cal:divRequest>
    </soapenv:Body>
-
-
-
 </soapenv:Envelope>
+
+###
+
+get http://localhost:8001/api/actores/v1?page=1
+Accept: application/pdf,application/json
+
+###
+
+get http://localhost:8001/api/actores/v1
+Accept: application/xml
+
+###
+
+get http://localhost:8001/api/actores/v1/2/pelis
+Accept: application/pdf,application/json
+
+###
+
+post http://localhost:8001/api/actores/v1
+Content-Type: application/json
+
+{ 
+   "nombre": "Servicio",
+   "apellidos": "Rest"
+}
+
+###
+
+put http://localhost:8001/api/actores/v1/200
+Content-Type: application/json
+
+{
+   "id": 200,
+   "nombre": "Servicio",
+   "apellidos": "Rest"
+}
+
+###
+
+DELETE http://localhost:8001/api/actores/v1/200
