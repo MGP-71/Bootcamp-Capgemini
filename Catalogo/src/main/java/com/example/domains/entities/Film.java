@@ -423,6 +423,12 @@ public class Film extends EntityBase<Film> implements Serializable {
 			return false;
 	}
 
+	public Film(int filmId, @NotBlank @Size(max = 128) String title) {
+		super();
+		this.filmId = filmId;
+		this.title = title;
+	}
+
 	@Override
 	public String toString() {
 		return "Film [filmId=" + filmId + ", title=" + title + ", rentalDuration=" + rentalDuration + ", rentalRate="

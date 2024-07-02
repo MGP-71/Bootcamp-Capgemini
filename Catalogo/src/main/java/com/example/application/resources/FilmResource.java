@@ -1,10 +1,6 @@
 package com.example.application.resources;
 
-import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.domains.contracts.services.FilmService;
-import com.example.domains.entities.Film;
-import com.example.domains.entities.models.ActorDTO;
 import com.example.domains.entities.models.FilmDTO;
 import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
@@ -42,79 +36,32 @@ public class FilmResource {
 		this.srv = srv;
 	}
 
-	@GetMapping
-	public List getAll(@RequestParam(required = false) String modo) {
-		return srv.getAll().stream().map(o -> new FilmDTO(o.getFilmId(), o.getTitle())).toList();
-	}
-
 	@GetMapping(params = "page")
-	public Page<Film> getAll(Pageable page) {
-		return srv.getAll(page);
-	}
-
-	@GetMapping(path = "/{id}")
-	public Film getOne(@PathVariable int id) throws NotFoundException {
-		var item = srv.getOne(id);
-		if (item.isEmpty())
-			throw new NotFoundException();
-		return item.get();
-
-	}
-
-	record Rental(int filmId, String title, BigDecimal rental) {
-	}
-
-	@GetMapping(path = "/{id}/rental")
-	public Rental getRental(@PathVariable int id) throws NotFoundException {
-		var item = srv.getOne(id);
-		if (item.isEmpty())
-			throw new NotFoundException();
-		return new Rental(item.get().getFilmId(), item.get().getTitle(), item.get().getRentalRate());
-
-	}
-
-	@GetMapping(path = "/{id}/actores")
-	public List<ActorDTO> getActores(@PathVariable int id) throws NotFoundException {
-		var item = srv.getOne(id);
-		if (item.isEmpty())
-			throw new NotFoundException();
-
-		return item.get().getActors().stream().map(ActorDTO::from).collect(Collectors.toList());
-	}
-
-	@GetMapping(path = "/lang/{language}")
-	public ResponseEntity<?> getByLanguage(@PathVariable String language) throws NotFoundException {
-		List<FilmDTO> films = new ArrayList<FilmDTO>();
-		for (Film f : srv.getAll())
-			if (f.getLanguage().getName().toUpperCase().equals(language.toUpperCase()))
-				films.add(FilmDTO.from(f));
-		if (films.isEmpty())
-			return new ResponseEntity<>("Language not found", HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(films, HttpStatus.OK);
+	public Page<FilmDTO> getAll(Pageable pageable, @RequestParam(defaultValue = "short") String mode) {
+		return srv.getByProjection(pageable, FilmDTO.class);
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> create(@Valid @RequestBody Film item)
-			throws DuplicateKeyException, InvalidDataException {
-		var newItem = srv.add(item);
+	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTO item)
+			throws BadRequestException, DuplicateKeyException, InvalidDataException {
+		var newItem = srv.add(FilmDTO.from(item));
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newItem.getFilmId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping(path = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // 204
-	public void update(@PathVariable int id, @Valid @RequestBody Film item)
-			throws BadRequestException, NotFoundException, InvalidDataException {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void update(@PathVariable int id, @Valid @RequestBody FilmDTO item)
+			throws NotFoundException, InvalidDataException, BadRequestException {
 		if (id != item.getFilmId())
-			throw new BadRequestException("No coinciden los ids");
-		srv.modify(item);
+			throw new BadRequestException("No coinciden los identificadores");
+		srv.modify(FilmDTO.from(item));
 	}
 
 	@DeleteMapping(path = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // 204
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int id) {
 		srv.deleteById(id);
 	}
-
 }

@@ -17,7 +17,7 @@ public class ActorDTO implements Serializable {
 	private int actorId;
 	@JsonProperty("nombre")
 	@NotBlank
-	@Size(max = 5)
+	@Size(max = 15)
 	private String firstName;
 	@JsonProperty("apellidos")
 	private String lastName;

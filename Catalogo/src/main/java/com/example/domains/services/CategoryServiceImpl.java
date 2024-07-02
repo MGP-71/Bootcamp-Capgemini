@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<Category> getAll() {
-		return dao.findAll();
+		return dao.findAllByOrderByName();
 	}
 
 	@Override
@@ -58,19 +58,16 @@ public class CategoryServiceImpl implements CategoryService {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		dao.delete(item);
-
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
-
 	}
 
 	@Override
 	public List<Category> novedades(Timestamp fecha) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 }

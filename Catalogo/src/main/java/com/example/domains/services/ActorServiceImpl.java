@@ -1,7 +1,6 @@
 package com.example.domains.services;
 
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,52 +12,51 @@ import org.springframework.stereotype.Service;
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.Actor;
-import com.example.domains.entities.Film;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
 @Service
 public class ActorServiceImpl implements ActorService {
-	private ActorRepository daoActorRepository;
+	private ActorRepository dao;
 
-	public ActorServiceImpl(ActorRepository daoActorRepository) {
-		this.daoActorRepository = daoActorRepository;
+	public ActorServiceImpl(ActorRepository dao) {
+		this.dao = dao;
 	}
 
 	@Override
 	public <T> List<T> getByProjection(Class<T> type) {
-		return daoActorRepository.findAllBy(type);
+		return dao.findAllBy(type);
 	}
 
 	@Override
 	public <T> Iterable<T> getByProjection(Sort sort, Class<T> type) {
-		return daoActorRepository.findAllBy(sort, type);
+		return dao.findAllBy(sort, type);
 	}
 
 	@Override
 	public <T> Page<T> getByProjection(Pageable pageable, Class<T> type) {
-		return daoActorRepository.findAllBy(pageable, type);
+		return dao.findAllBy(pageable, type);
 	}
 
 	@Override
 	public Iterable<Actor> getAll(Sort sort) {
-		return daoActorRepository.findAll(sort);
+		return dao.findAll(sort);
 	}
 
 	@Override
 	public Page<Actor> getAll(Pageable pageable) {
-		return daoActorRepository.findAll(pageable);
+		return dao.findAll(pageable);
 	}
 
 	@Override
 	public List<Actor> getAll() {
-		return daoActorRepository.findAll();
+		return dao.findAll();
 	}
 
 	@Override
 	public Optional<Actor> getOne(Integer id) {
-		return daoActorRepository.findById(id);
+		return dao.findById(id);
 	}
 
 	@Override
@@ -67,10 +65,9 @@ public class ActorServiceImpl implements ActorService {
 			throw new InvalidDataException("No puede ser nulo");
 		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		// evito que haga el exist si no es necesario
-		if (item.getActorId() != 0 && daoActorRepository.existsById(item.getActorId()))
+		if (item.getActorId() != 0 && dao.existsById(item.getActorId()))
 			throw new DuplicateKeyException("Ya existe");
-		return daoActorRepository.save(item);
+		return dao.save(item);
 	}
 
 	@Override
@@ -79,34 +76,32 @@ public class ActorServiceImpl implements ActorService {
 			throw new InvalidDataException("No puede ser nulo");
 		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if (!daoActorRepository.existsById(item.getActorId()))
+		if (!dao.existsById(item.getActorId()))
 			throw new NotFoundException();
-		return daoActorRepository.save(item);
+		return dao.save(item);
 	}
 
 	@Override
 	public void delete(Actor item) throws InvalidDataException {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		daoActorRepository.delete(item);
+		dao.delete(item);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		daoActorRepository.deleteById(id);
-
+		dao.deleteById(id);
 	}
 
 	@Override
 	public void repartePremios() {
-		System.out.println("Repartiendo premios...");
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Collection<Film> novedades(Timestamp fecha) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Actor> novedades(Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 }

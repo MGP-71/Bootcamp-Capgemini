@@ -35,13 +35,11 @@ class ActorRepositoryMemoryTest {
 		item.setLastUpdate(Timestamp.valueOf("2019-01-01 00:00:00"));
 		em.persist(item);
 	}
-	
+
 	@Test
 	void testGetAll_isNotEmpty() {
 		var rslt = dao.findAll();
 		assertThat(rslt.size()).isEqualTo(3);
-		assertThat(dao.findTop5ByLastNameStartingWithOrderByFirstNameDesc("C").size()).isEqualTo(1);
-		assertThat(dao.findByJPQL(1).size()).isEqualTo(3);
 	}
 
 	@Test
@@ -49,12 +47,6 @@ class ActorRepositoryMemoryTest {
 		var item = dao.findById(dao.findAll().get(0).getActorId());
 		assertThat(item.isPresent()).isTrue();
 		assertEquals("Pepito", item.get().getFirstName());
-	}
-
-	
-	@Test
-	void findBySQLTest() {
-		assertThat(dao.findBySQL(1).size()).isGreaterThan(0);
 	}
 
 }

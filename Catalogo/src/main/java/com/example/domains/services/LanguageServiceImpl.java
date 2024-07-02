@@ -58,19 +58,16 @@ public class LanguageServiceImpl implements LanguageService {
 		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		dao.delete(item);
-
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
-
 	}
 
 	@Override
 	public List<Language> novedades(Timestamp fecha) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 }

@@ -1,35 +1,44 @@
 package com.example.domains.entities;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 /**
  * The persistent class for the film_actor database table.
  * 
  */
 @Entity
-@Table(name="film_actor")
-@NamedQuery(name="FilmActor.findAll", query="SELECT f FROM FilmActor f")
+@Table(name = "film_actor")
+@NamedQuery(name = "FilmActor.findAll", query = "SELECT f FROM FilmActor f")
 public class FilmActor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private FilmActorPK id;
 
-	@Column(name="last_update", insertable = false, updatable = false)
+	@Column(name = "last_update", insertable = false, updatable = false)
 	private Timestamp lastUpdate;
 
-	//bi-directional many-to-one association to Actor
+	// bi-directional many-to-one association to Actor
 	@ManyToOne
-	@JoinColumn(name="actor_id", insertable=false, updatable=false)
+	@JoinColumn(name = "actor_id", insertable = false, updatable = false)
 	private Actor actor;
 
-	//bi-directional many-to-one association to Film
+	// bi-directional many-to-one association to Film
 	@ManyToOne
-	@JoinColumn(name="film_id", insertable=false, updatable=false)
+	@JoinColumn(name = "film_id", insertable = false, updatable = false)
+	@JsonManagedReference
 	private Film film;
 
 	public FilmActor() {
@@ -72,6 +81,7 @@ public class FilmActor implements Serializable {
 	public void setFilm(Film film) {
 		this.film = film;
 	}
+
 	@PrePersist
 	private void prePersiste() {
 		if (id == null) {

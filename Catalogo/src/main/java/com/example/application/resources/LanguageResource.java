@@ -1,8 +1,12 @@
 package com.example.application.resources;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,61 +20,96 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.domains.contracts.services.LanguageService;
+import com.example.domains.contracts.repositories.LanguageRepository;
 import com.example.domains.entities.Language;
+import com.example.domains.entities.models.FilmDTO;
 import com.example.exceptions.BadRequestException;
-import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/languages/v1")
+@RequestMapping(path = "/idiomas/v1")
 public class LanguageResource {
-	private LanguageService srv;
-
-	public LanguageResource(LanguageService srv) {
-		this.srv = srv;
-	}
+	@Autowired
+	private LanguageRepository dao;
 
 	@GetMapping
+	@JsonView(Language.Partial.class)
 	public List<Language> getAll() {
-		return srv.getAll();
-
+		return dao.findAll();
 	}
 
 	@GetMapping(path = "/{id}")
-	public Language getOne(@PathVariable int id) throws NotFoundException {
-		var item = srv.getOne(id);
-		if (item.isEmpty())
+	@JsonView(Language.Complete.class)
+	public Language getOne(@PathVariable int id) throws Exception {
+		Optional<Language> rslt = dao.findById(id);
+		if (!rslt.isPresent())
 			throw new NotFoundException();
-		return item.get();
+		return rslt.get();
+	}
 
+	@GetMapping(path = "/{id}/peliculas")
+	@Transactional
+	public List<FilmDTO> getFilms(@PathVariable int id) throws Exception {
+		Optional<Language> rslt = dao.findById(id);
+		if (!rslt.isPresent())
+			throw new NotFoundException();
+		return rslt.get().getFilms().stream().map(item -> FilmDTO.from(item)).collect(Collectors.toList());
+	}
+
+	@GetMapping(path = "/{id}/vo")
+	@Transactional
+	public List<FilmDTO> getFilmsVO(@PathVariable int id) throws Exception {
+		Optional<Language> rslt = dao.findById(id);
+		if (!rslt.isPresent())
+			throw new NotFoundException();
+		return rslt.get().getFilmsVO().stream().map(item -> FilmDTO.from(item)).collect(Collectors.toList());
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> create(@Valid @RequestBody Language item)
-			throws BadRequestException, DuplicateKeyException, InvalidDataException {
-		var newItem = srv.add(item);
+	@ResponseStatus(code = HttpStatus.CREATED)
+	@JsonView(Language.Partial.class)
+	public ResponseEntity<Object> add(@Valid @RequestBody Language item) throws Exception {
+		if (item.isInvalid())
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
+		if (dao.findById(item.getLanguageId()).isPresent())
+			throw new InvalidDataException("Duplicate key");
+		dao.save(item);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(newItem.getLanguageId()).toUri();
+				.buildAndExpand(item.getLanguageId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@PutMapping(path = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // 204
-	public void update(@PathVariable int id, @Valid @RequestBody Language item)
-			throws BadRequestException, NotFoundException, InvalidDataException {
-		if (id != item.getLanguageId())
-			throw new BadRequestException("No coinciden los ids");
-		srv.modify(item);
+	@JsonView(Language.Partial.class)
+	public Language modify(@PathVariable int id, @Valid @RequestBody Language item) throws Exception {
+		if (item.getLanguageId() != id)
+			throw new BadRequestException("No coinciden los ID");
+		if (item.isInvalid())
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
+		if (!dao.findById(item.getLanguageId()).isPresent())
+			throw new NotFoundException();
+		dao.save(item);
+		return item;
 	}
 
 	@DeleteMapping(path = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // 204
-	public void delete(@PathVariable int id) {
-		srv.deleteById(id);
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@JsonView(Language.Partial.class)
+	public void delete(@PathVariable int id) throws Exception {
+		try {
+			dao.deleteById(id);
+		} catch (Exception e) {
+			throw new NotFoundException("Missing item", e);
+		}
+	}
+
+	public List<Language> novedades(Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 }
