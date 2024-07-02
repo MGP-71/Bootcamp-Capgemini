@@ -1,6 +1,5 @@
 package com.example.domains.services;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,41 +32,38 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category add(Category item) throws DuplicateKeyException, InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(item.getCategoryId() != 0 && dao.existsById(item.getCategoryId()))
+		if (item.getCategoryId() != 0 && dao.existsById(item.getCategoryId()))
 			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
 	@Override
 	public Category modify(Category item) throws NotFoundException, InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(!dao.existsById(item.getCategoryId()))
+		if (!dao.existsById(item.getCategoryId()))
 			throw new NotFoundException();
 		return dao.save(item);
 	}
 
 	@Override
 	public void delete(Category item) throws InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
 		dao.delete(item);
+
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
+
 	}
 
-	@Override
-	public List<Category> novedades(Timestamp fecha) {
-		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
-	}
-	
 }

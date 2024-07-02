@@ -1,9 +1,9 @@
 package com.example.domains.services;
 
-import java.sql.Timestamp;
+import java.security.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,9 +17,6 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
-import jakarta.transaction.Transactional;
-import lombok.NonNull;
-
 @Service
 public class FilmServiceImpl implements FilmService {
 	private FilmRepository dao;
@@ -29,27 +26,33 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public <T> List<T> getByProjection(@NonNull Class<T> type) {
-		return dao.findAllBy(type);
+	public void deleteById(Integer id) {
+		dao.deleteById(id);
+
 	}
 
 	@Override
-	public <T> List<T> getByProjection(@NonNull Sort sort, @NonNull Class<T> type) {
-		return dao.findAllBy(sort, type);
+	public List<Film> getAll(Specification<Film> spec) {
+		return dao.findAll(spec);
 	}
 
 	@Override
-	public <T> Page<T> getByProjection(@NonNull Pageable pageable, @NonNull Class<T> type) {
-		return dao.findAllBy(pageable, type);
+	public Page<Film> getAll(Specification<Film> spec, Pageable pageable) {
+		return dao.findAll(spec, pageable);
 	}
 
 	@Override
-	public List<Film> getAll(@NonNull Sort sort) {
+	public List<Film> getAll(Specification<Film> spec, Sort sort) {
+		return dao.findAll(spec, sort);
+	}
+
+	@Override
+	public Iterable<Film> getAll(Sort sort) {
 		return dao.findAll(sort);
 	}
 
 	@Override
-	public Page<Film> getAll(@NonNull Pageable pageable) {
+	public Page<Film> getAll(Pageable pageable) {
 		return dao.findAll(pageable);
 	}
 
@@ -64,63 +67,43 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public Optional<Film> getOne(@NonNull Specification<Film> spec) {
-		return dao.findOne(spec);
-	}
-
-	@Override
-	public List<Film> getAll(@NonNull Specification<Film> spec) {
-		return dao.findAll(spec);
-	}
-
-	@Override
-	public Page<Film> getAll(@NonNull Specification<Film> spec, @NonNull Pageable pageable) {
-		return dao.findAll(spec, pageable);
-	}
-
-	@Override
-	public List<Film> getAll(@NonNull Specification<Film> spec, @NonNull Sort sort) {
-		return dao.findAll(spec, sort);
-	}
-
-	@Override
-	@Transactional
 	public Film add(Film item) throws DuplicateKeyException, InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		if(dao.existsById(item.getFilmId()))
-			throw new DuplicateKeyException(item.getErrorsMessage());
+		if (item.getFilmId() != 0 && dao.existsById(item.getFilmId()))
+			throw new DuplicateKeyException("Ya existe");
 		return dao.save(item);
 	}
 
 	@Override
-	@Transactional
 	public Film modify(Film item) throws NotFoundException, InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		if(item.isInvalid())
+		if (item.isInvalid())
 			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
-		var leido = dao.findById(item.getFilmId()).orElseThrow(() -> new NotFoundException());
-		return dao.save(item.merge(leido));
+		return dao.save(item);
+
 	}
 
 	@Override
 	public void delete(Film item) throws InvalidDataException {
-		if(item == null)
+		if (item == null)
 			throw new InvalidDataException("No puede ser nulo");
-		deleteById(item.getFilmId());
+		dao.delete(item);
+
 	}
 
 	@Override
-	public void deleteById(Integer id) {
-		dao.deleteById(id);
+	public Optional<Film> getOne(Specification<Film> spec) {
+		return dao.findOne(spec);
 	}
 
 	@Override
-	public List<Film> novedades(@NonNull Timestamp fecha) {
-		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
+	public List<Film> novedades(Timestamp fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

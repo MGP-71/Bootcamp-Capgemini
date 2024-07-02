@@ -1,4 +1,4 @@
-package com.example.application.proxies.resources;
+package com.example.application.resources;
 
 import java.net.URI;
 import java.util.List;
@@ -40,19 +40,16 @@ public class ActorResource {
 	}
 
 	@GetMapping
-	public List<ActorShort> getAll(@RequestParam(required = false, defaultValue = "largo") String modo) {
+	public List getAll(@RequestParam(required = false, defaultValue = "largo") String modo) {
 		if ("short".equals(modo))
 			return srv.getByProjection(ActorShort.class);
 		else
-			return srv.getByProjection(ActorShort.class);
+			return srv.getAll(); // srv.getByProjection(ActorDTO.class);
 	}
 
 	@GetMapping(params = "page")
 	public Page<ActorShort> getAll(Pageable page) {
 		return srv.getByProjection(page, ActorShort.class);
-	}
-
-	record Peli(int id, String titulo) {
 	}
 
 	@GetMapping(path = "/{id}")
@@ -63,14 +60,26 @@ public class ActorResource {
 		return ActorDTO.from(item.get());
 	}
 
+	record Peli(int id, String titulo) {
+	}
+
 	@GetMapping(path = "/{id}/pelis")
 	@Transactional
 	public List<Peli> getPelis(@PathVariable int id) throws NotFoundException {
 		var item = srv.getOne(id);
 		if (item.isEmpty())
 			throw new NotFoundException();
-		return item.get().getFilmActors().stream().
-				map(o -> new Peli(o.getFilm().getFilmId(), o.getFilm().getTitle())).toList();
+		return item.get().getFilmActors().stream().map(o -> new Peli(o.getFilm().getFilmId(), o.getFilm().getTitle()))
+				.toList();
+	}
+
+	@DeleteMapping(path = "/{id}/jubilacion")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void jubilar(@PathVariable int id) throws NotFoundException {
+		var item = srv.getOne(id);
+		if (item.isEmpty())
+			throw new NotFoundException();
+		item.get().jubilate();
 	}
 
 	@PostMapping
@@ -85,15 +94,15 @@ public class ActorResource {
 	@PutMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@PathVariable int id, @Valid @RequestBody ActorDTO item)
-			throws BadRequestException, NotFoundException, InvalidDataException {
+			throws NotFoundException, InvalidDataException, BadRequestException {
 		if (id != item.getActorId())
-			throw new BadRequestException("No coinciden los id´s");
+			throw new BadRequestException("No coinciden los identificadores");
 		srv.modify(ActorDTO.from(item));
 	}
 
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable int id) throws BadRequestException, NotFoundException, InvalidDataException {
+	public void delete(@PathVariable int id) {
 		srv.deleteById(id);
 	}
 }
