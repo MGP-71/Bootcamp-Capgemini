@@ -1,5 +1,7 @@
 package com.example.domains.services;
 
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.domains.contracts.repositories.ActorRepository;
 import com.example.domains.contracts.services.ActorService;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.Film;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
@@ -98,6 +101,12 @@ public class ActorServiceImpl implements ActorService {
 	public void repartePremios() {
 		System.out.println("Repartiendo premios...");
 
+	}
+
+	@Override
+	public Collection<Film> novedades(Timestamp fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
