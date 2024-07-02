@@ -30,7 +30,7 @@ Accept: application/pdf,application/json
 
 ###
 
-post http://localhost:8001/api/actores/v1
+post http://localhost:8010/api/actores/v1
 Content-Type: application/json
 
 {
@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ###
 
-put http://localhost:8001/api/actores/v1/205
+put http://localhost:8010/api/actores/v1/205
 Content-Type: application/json
 
 {
@@ -55,4 +55,42 @@ DELETE http://localhost:8001/api/actores/v1/205
 
 ###
 
-get http://localhost:8001/api/actores/v1/205
+get http://localhost:8010/api/peliculas/v1
+Accept: application/json
+
+###
+
+get http://localhost:8010/api/actores/v1
+Accept: application/json
+
+###
+
+put http://localhost:8010/api/categories/v1/89
+Content-Type: application/json
+
+{
+   "id":89,
+   "nombre":"Prueba"
+}
+
+###
+
+put http://localhost:8010/api/peliculas/v1/500
+Content-Type: application/json
+
+{
+   "id":500,
+   "nombre":"Prueba"
+   "type": "about:blank",
+   "title": "Prueba",
+   "status": 400,
+   "detail": "Prueba",
+   "instance": "/api/peliculas/v1/500",
+   "rentalRate": 4,
+   "rentalDuration": "must be greater than 0",
+   "replacementCost": "must not be null",
+   "language": "must not be null",
+   "title": "must not be blank"
+}
+
+###
