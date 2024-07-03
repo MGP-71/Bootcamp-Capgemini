@@ -21,46 +21,45 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.domains.contracts.services.CategoryService;
-import com.example.domains.entities.Category;
-import com.example.domains.entities.models.CategoryDTO;
-import com.example.domains.entities.models.CategoryShort;
+import com.example.domains.contracts.services.LanguageService;
+import com.example.domains.entities.Language;
+import com.example.domains.entities.models.LanguageDTO;
+import com.example.domains.entities.models.LanguageShort;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Value;
 
-@WebMvcTest(CategoryResource.class)
-class CategoryResourceTest {
+@WebMvcTest(LanguageResource.class)
+class LanguageResourceTest {
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
-	private CategoryService srv;
+	private LanguageService srv;
 
 	@Autowired
 	ObjectMapper objectMapper;
 
 	@Value
-	static class CategoryShortMock implements CategoryShort {
+	static class LanguageShortMock implements LanguageShort {
 		int id;
 		String nombre;
 	}
 
 	@Test
 	void testGetAllString() throws Exception {
-		List<Category> lista = new ArrayList<>(
-				Arrays.asList(new Category(1, "Obliacgion"), new Category(2, "Fantasia")));
+		List<Language> lista = new ArrayList<>(Arrays.asList(new Language(1, "Ingles"), new Language(2, "Frances")));
 		when(srv.getAll()).thenReturn(lista);
-		mockMvc.perform(get("/api/categorias/v1?").accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk(),
+		mockMvc.perform(get("/api/idiomas/v1?").accept(MediaType.APPLICATION_JSON)).andExpectAll(status().isOk(),
 				content().contentType("application/json"), jsonPath("$.size()").value(2));
 	}
 
 	@Test
 	void testGetOne() throws Exception {
 		int id = 1;
-		var ele = new Category(1, "Obliacgion");
+		var ele = new Language(1, "Ingles");
 		when(srv.getOne(id)).thenReturn(Optional.of(ele));
-		mockMvc.perform(get("/api/categorias/v1/{id}", id)).andExpect(status().isOk())
+		mockMvc.perform(get("/api/idiomas/v1/{id}", id)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(id)).andExpect(jsonPath("$.nombre").value(ele.getName()))
 				.andDo(print());
 	}
@@ -68,19 +67,19 @@ class CategoryResourceTest {
 	@Test
 	void testGetOne404() throws Exception {
 		int id = 1;
-		var ele = new Category(id, "Fantasia");
+		var ele = new Language(id, "Tituquito");
 		when(srv.getOne(id)).thenReturn(Optional.empty());
-		mockMvc.perform(get("/api/categorias/v1/{id}", id)).andExpect(status().isNotFound())
+		mockMvc.perform(get("/api/idiomas/v1/{id}", id)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.title").value("Not Found")).andDo(print());
 	}
 
 	@Test
 	void testCreate() throws Exception {
 		int id = 1;
-		var ele = new Category(id, "Novela antigua");
+		var ele = new Language(id, "Español");
 		when(srv.add(ele)).thenReturn(ele);
-		mockMvc.perform(post("/api/categorias/v1").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(CategoryDTO.from(ele)))).andExpect(status().isCreated())
-				.andExpect(header().string("Location", "http://localhost/api/categorias/v1/1")).andDo(print());
+		mockMvc.perform(post("/api/idiomas/v1").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(LanguageDTO.from(ele)))).andExpect(status().isCreated())
+				.andExpect(header().string("Location", "http://localhost/api/idiomas/v1/1")).andDo(print());
 	}
 }

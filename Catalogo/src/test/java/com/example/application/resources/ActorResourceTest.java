@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,14 +42,6 @@ class ActorResourceTest {
 	@Autowired
 	ObjectMapper objectMapper;
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
 	@Value
 	static class ActorShortMock implements ActorShort {
 		int id;
@@ -65,12 +55,6 @@ class ActorResourceTest {
 		when(srv.getByProjection(ActorShort.class)).thenReturn(lista);
 		mockMvc.perform(get("/api/actores/v1?modo=short").accept(MediaType.APPLICATION_JSON)).andExpectAll(
 				status().isOk(), content().contentType("application/json"), jsonPath("$.size()").value(3));
-//		mvc.perform(get("/api/actores/v1").accept(MediaType.APPLICATION_XML))
-//			.andExpectAll(
-//					status().isOk(), 
-//					content().contentType("application/json"),
-//					jsonPath("$.size()").value(3)
-//					);
 	}
 
 	@Test
@@ -102,16 +86,6 @@ class ActorResourceTest {
 		mockMvc.perform(get("/api/actores/v1/{id}", id)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.title").value("Not Found")).andDo(print());
 	}
-//
-//	@Test
-//	void testGetPelis() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetPeliculas() {
-//		fail("Not yet implemented");
-//	}
 
 	@Test
 	void testCreate() throws Exception {
@@ -122,20 +96,4 @@ class ActorResourceTest {
 				.content(objectMapper.writeValueAsString(ActorDTO.from(ele)))).andExpect(status().isCreated())
 				.andExpect(header().string("Location", "http://localhost/api/actores/v1/1")).andDo(print());
 	}
-
-//	@Test
-//	void testDarPremio() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testUpdate() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testDelete() {
-//		fail("Not yet implemented");
-//	}
-
 }

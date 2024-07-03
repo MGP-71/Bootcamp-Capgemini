@@ -46,6 +46,14 @@ public class CategoryResource {
 		return srv.getAll();
 	}
 
+	@GetMapping(path = "/{id}")
+	public CategoryDTO getOne(@PathVariable int id) throws NotFoundException {
+		var item = srv.getOne(id);
+		if (item.isEmpty())
+			throw new NotFoundException();
+		return CategoryDTO.from(item.get());
+	}
+
 	@PostMapping
 	public ResponseEntity<Object> create(@Valid @RequestBody CategoryDTO item)
 			throws BadRequestException, DuplicateKeyException, InvalidDataException {

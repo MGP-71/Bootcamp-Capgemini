@@ -41,6 +41,14 @@ public class FilmResource {
 		return srv.getByProjection(pageable, FilmDTO.class);
 	}
 
+	@GetMapping(path = "/{id}")
+	public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
+		var item = srv.getOne(id);
+		if (item.isEmpty())
+			throw new NotFoundException();
+		return FilmDTO.from(item.get());
+	}
+
 	@PostMapping
 	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTO item)
 			throws BadRequestException, DuplicateKeyException, InvalidDataException {
