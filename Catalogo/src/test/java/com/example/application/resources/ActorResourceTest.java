@@ -14,9 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +35,12 @@ import lombok.Value;
 @WebMvcTest(ActorResource.class)
 class ActorResourceTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+	List<Actor> table;
 
 	@BeforeEach
 	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
+		table = new ArrayList<>(Arrays.asList(new Actor(1, "Pepito", "Grillo"), new Actor(2, "Carmelo", "Coton"),
+				new Actor(3, "Capitan", "Tan")));
 	}
 
 	@Autowired
@@ -71,8 +60,9 @@ class ActorResourceTest {
 
 	@Test
 	void testGetAllString() throws Exception {
-		List<ActorShort> lista = new ArrayList<>(Arrays.asList(new ActorShortMock(1, "Pepito Grillo"),
-				new ActorShortMock(2, "Carmelo Coton"), new ActorShortMock(3, "Capitan Tan")));
+		List<ActorShort> lista = table.stream()
+				.map(o -> (ActorShort) new ActorShortMock(o.getActorId(), o.getFirstName() + " " + o.getLastName()))
+				.toList();
 		when(srv.getByProjection(ActorShort.class)).thenReturn(lista);
 		mockMvc.perform(get("/api/actores/v1?modo=short").accept(MediaType.APPLICATION_JSON)).andExpectAll(
 				status().isOk(), content().contentType("application/json"), jsonPath("$.size()").value(3));
