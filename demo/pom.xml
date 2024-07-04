@@ -16,6 +16,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
+		<therapi.version>0.13.0</therapi.version>
+		<spring-cloud.version>2023.0.2</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -66,31 +68,43 @@
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>demo-ws</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.therapi</groupId>
+			<artifactId>therapi-runtime-javadoc</artifactId>
+			<version>${therapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.batch</groupId>
-			<artifactId>spring-batch-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -112,13 +126,6 @@
 				<groupId>com.sun.xml.ws</groupId>
 				<artifactId>jaxws-maven-plugin</artifactId>
 				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<packageName>com.example.webservice.schema</packageName>
 					<wsdlUrls>
@@ -127,6 +134,19 @@
 					<sourceDestDir>${sourcesDir}</sourceDestDir>
 					<destDir>${classesDir}</destDir>
 					<extension>true</extension>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.github.therapi</groupId>
+							<artifactId>therapi-runtime-javadoc-scribe</artifactId>
+							<version>${therapi.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -145,4 +165,15 @@
 		<tag />
 		<url />
 	</scm>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
