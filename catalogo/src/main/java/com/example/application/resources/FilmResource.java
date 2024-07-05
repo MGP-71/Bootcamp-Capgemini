@@ -32,6 +32,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/peliculas/v1")
 public class FilmResource {
+
 	private FilmService srv;
 
 	public FilmResource(FilmService srv) {
