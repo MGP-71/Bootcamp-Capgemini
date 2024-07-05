@@ -2,7 +2,7 @@ package com.example;
 
 import java.util.Date;
 import java.util.Random;
-
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.PostConstruct;
 
 @RestController
 @RequestMapping(path = "/me-gusta")
@@ -29,7 +28,7 @@ public class MeGustaService {
 
 	private ValueOperations<String, String> redisValue;
 	private HashOperations<String, String, String> hashOperations;
-
+	
 	@PostConstruct
 	private void inicializa() {
 		redisValue = template.opsForValue();
@@ -81,15 +80,14 @@ public class MeGustaService {
 	private String addPeliMiles(@PathVariable int miles) {
 		Random rnd = new Random();
 		Date ini = new Date();
-		for (int i = 0; i++ < miles * 1000; hashOperations.increment(ME_GUSTA_PELIS,
-				Integer.toString(rnd.nextInt(1, 1001)), 1))
+		for (int i = 0; i++ < miles * 1000; hashOperations.increment(ME_GUSTA_PELIS, Integer.toString(rnd.nextInt(1, 1001)), 1))
 			;
 		return "Ha tardado " + ((new Date()).getTime() - ini.getTime()) + " ms.";
 	}
-
+	
 	@Autowired
 	PeliculaContRepository dao;
-
+	
 	@GetMapping("/repo/{id}")
 	@Operation(summary = "Informa de cuantos Me Gusta lleva actualmente una pelicula")
 	private String getRepo(@PathVariable int id) {
@@ -103,8 +101,8 @@ public class MeGustaService {
 	private String addRepo(@PathVariable int id) {
 		var item = dao.findById(id);
 		PeliculaCont peli;
-		if (item.isEmpty()) {
-			peli = new PeliculaCont(id, 1);
+		if(item.isEmpty()) {
+			peli =new PeliculaCont(id, 1);
 		} else {
 			peli = item.get();
 			peli.addCont();
@@ -119,8 +117,7 @@ public class MeGustaService {
 	private String addRepoMiles(@PathVariable int miles) {
 		Random rnd = new Random();
 		Date ini = new Date();
-		for (int i = 0; i++ < miles * 1000; addRepo(rnd.nextInt(1, 101)))
-			;
+		for (int i = 0; i++ < miles * 1000; addRepo(rnd.nextInt(1, 101)));
 		return "Ha tardado " + ((new Date()).getTime() - ini.getTime()) + " ms.";
 	}
 

@@ -1,4 +1,4 @@
-package com.example.application.proxies.resources;
+package com.example.application.resources;
 
 import java.net.URI;
 import java.util.List;
