@@ -1,16 +1,16 @@
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 
 export const ERROR_LEVEL = new InjectionToken<string>('ERROR_LEVEL')
-
 @Injectable(
   // { providedIn: 'root' }
 )
 export class LoggerService {
-  private nivel: number = 99
+  private readonly nivel: number
 
   constructor(@Optional() @Inject(ERROR_LEVEL) nivel?: number) {
-    // if (nivel || nivel == 0)
+    // if(nivel || nivel === 0) {
     //   this.nivel = nivel
+    // }
     this.nivel = nivel ?? 99
   }
 
@@ -24,10 +24,11 @@ export class LoggerService {
   }
   public info(message: string): void {
     if (this.nivel > 2)
-      if (console.info)
+      if (console.info) {
         console.info(message)
-      else
+      } else {
         console.log(message)
+      }
   }
   public log(message: string): void {
     if (this.nivel > 3)
