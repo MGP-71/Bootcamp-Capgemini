@@ -49,4 +49,6 @@
   <input type="button" value="add" (click)="add(txtProvincia.value)" >
 </p>
 <my-sizer [(size)]="fontSize" />
-<p  [style.font-size.px]="fontSize">{{listado | json}}</p>
+<p [style.font-size.px]="fontSize">
+  {{listado | json}}
+</p>
