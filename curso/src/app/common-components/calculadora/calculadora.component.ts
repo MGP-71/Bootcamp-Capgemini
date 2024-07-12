@@ -8,14 +8,17 @@ import { evaluate } from 'mathjs';
   styleUrls: ['./calculadora.component.css']
 })
 export class CalculadoraComponent {
-  displayValue: string = '';
+  displayValue: string = '0';
 
   appendToDisplay(value: string) {
+    if (this.displayValue == '0') {
+      this.displayValue = ''
+    }
     this.displayValue += value;
   }
 
   clearDisplay() {
-    this.displayValue = '';
+    this.displayValue = '0';
   }
 
   calculateResult() {
