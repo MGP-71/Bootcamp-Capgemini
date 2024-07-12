@@ -11,7 +11,7 @@ export class CalculadoraComponent {
   displayValue: string = '0';
 
   appendToDisplay(value: string) {
-    if (this.displayValue == '0') {
+    if (this.displayValue == '0' && value != '.') {
       this.displayValue = ''
     }
     this.displayValue += value;
@@ -23,7 +23,11 @@ export class CalculadoraComponent {
 
   calculateResult() {
     try {
-      this.displayValue = evaluate(this.displayValue);
+      let result = eval(this.displayValue);
+      
+      result = +result.toFixed(10).toString(); 
+
+      this.displayValue = result.toString();
     } catch (e) {
       this.displayValue = 'Error';
     }
