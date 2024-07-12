@@ -18,6 +18,6 @@ export class DashboardComponent {
   ]
   actual: any = this.menu[0].componente
   seleccionar(indice: number) {
-    
+    this.actual = this.menu[indice].componente
   }
 }
