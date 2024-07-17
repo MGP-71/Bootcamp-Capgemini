@@ -1,31 +1,24 @@
-<output class="Resumen">@if (SeparadorDecimal === ',') {
-  {{Resumen | slice:-30 | toComaDecimal}}
-  } @else {
-  {{Resumen | slice:-30}}
-  }</output>
-<output class="Pantalla">@if (SeparadorDecimal === ',') {
-  {{Pantalla | toComaDecimal}}
-  } @else {
-  {{Pantalla}}
-  }</output>
-<input class="btnOperar col-1x2" type="button" value="C" (click)="inicia()">
-<input class="btnOperar" type="button" value="&#9003;" (click)="borrar()">
-<input class="btnOperar" type="button" value="+" (click)="calcula('+')">
-<input class="btnDigito" type="button" value="7" (click)="ponDigito('7');">
-<input class="btnDigito" type="button" value="8" (click)="ponDigito('8');">
-<input class="btnDigito" type="button" value="9" (click)="ponDigito('9');">
-<input class="btnOperar" type="button" value="-" (click)="calcula('-')">
-<input class="btnDigito" type="button" value="4" (click)="ponDigito('4');">
-<input class="btnDigito" type="button" value="5" (click)="ponDigito('5');">
-<input class="btnDigito" type="button" value="6" (click)="ponDigito('6');">
-<input class="btnOperar" type="button" value="*" (click)="calcula('*')">
-<input class="btnDigito" type="button" value="1" (click)="ponDigito('1');">
-<input class="btnDigito" type="button" value="2" (click)="ponDigito('2');">
-<input class="btnDigito" type="button" value="3" (click)="ponDigito('3');">
-<input class="btnOperar" type="button" value="/" (click)="calcula('/')">
-<input class="btnDigito" type="button" value="±" (click)="cambiaSigno()">
-<input class="btnDigito" type="button" value="0" (click)="ponDigito('0');">
-<input class="btnDigito" type="button" value="{{SeparadorDecimal}}" (click)="ponComa()">
-<input class="btnOperar" type="button" value="=" (click)="calcula('=');">
-<!-- <input class="btnDigito" type="button" value="π" (click)="ponOperando(Math.PI);">
-<input class="btnOperar" type="button" value="x" (click)="calcula('x');"> -->
+<div class="calculadora">
+    <input type="text" class="display" [value]="displayValue" disabled>
+    <div class="buttons">
+        <button class="button clear" (click)="clearDisplay()">C</button>
+        <button class="button" (click)="appendToDisplay('7')">7</button>
+        <button class="button" (click)="appendToDisplay('8')">8</button>
+        <button class="button" (click)="appendToDisplay('9')">9</button>
+        <button class="button operator" (click)="appendToDisplay('/')">/</button>
+        <button class="button" (click)="appendToDisplay('4')">4</button>
+        <button class="button" (click)="appendToDisplay('5')">5</button>
+        <button class="button" (click)="appendToDisplay('6')">6</button>
+        <button class="button operator" (click)="appendToDisplay('*')">*</button>
+        <button class="button" (click)="appendToDisplay('1')">1</button>
+        <button class="button" (click)="appendToDisplay('2')">2</button>
+        <button class="button" (click)="appendToDisplay('3')">3</button>
+        <button class="button operator" (click)="appendToDisplay('-')">-</button>
+        <button class="button operator" (click)="appendToDisplay('+')">+</button>
+        <button class="button" (click)="appendToDisplay('0')">0</button>
+        <button class="button" (click)="appendToDisplay('.')">.</button>
+        <button class="button equal" (click)="calculateResult()" style="float: right;">=</button>
+        
+    </div>
+    <div class="made-by">Hecho por Miguel</div>
+</div>

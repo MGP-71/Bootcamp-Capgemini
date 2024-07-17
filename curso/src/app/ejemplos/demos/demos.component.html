@@ -2,7 +2,6 @@
 <div class="container theme-dark">
   <div class="row">
     <div class="col">
-      <calculadora [SeparadorDecimal]="','" (updated)="ponResultado('IZQ', $event)" />
     </div>
     <table class="col table table-striped">
       <thead>
@@ -33,7 +32,6 @@
       </tbody>
     </table>
     <div class="col">
-      <calculadora [init]="valCalculadora" (updated)="ponResultado('DER', $event)"></calculadora>
     </div>
   </div>
   <div class="row">

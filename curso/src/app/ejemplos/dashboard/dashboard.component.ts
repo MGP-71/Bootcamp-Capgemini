@@ -11,7 +11,7 @@ import { ContactosComponent } from 'src/app/contactos';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NotificationComponent, CommonModule, AjaxWaitComponent, ],
+  imports: [NotificationComponent, CommonModule, AjaxWaitComponent, CalculadoraComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

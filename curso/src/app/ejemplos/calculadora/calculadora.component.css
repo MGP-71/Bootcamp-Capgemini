@@ -1,141 +1,46 @@
-:host {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: repeat(4, 1fr);
-  background-color: #e6f3ff !important;
-  border-style: outset !important;
-  padding: 6px !important;
-  margin: 4px !important;
-  max-width: 100%;
-  min-width: 150px;
-  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-@media (min-width: 768px) {
-  :host {
-    max-width: 500px;
-  }
-}
-@media (min-width: 992px) {
-  :host {
-    max-width: 700px;
-  }
-}
-@media (min-width: 1200px) {
-  :host {
-    max-width: 900px;
-  }
-}
-.Pantalla {
-  grid-column: 1/span 4;
-  background-color: #004000;
-  color: yellow;
-  border-style: inset !important;
-  text-align: right !important;
-  padding: 4px !important;
-  word-wrap: break-word;
-}
-@media (min-width: 576px) {
-  .Pantalla {
-    font-size: 2em !important;
-  }
-}
-@media (min-width: 768px) {
-  .Pantalla {
-    font-size: 3em !important;
-  }
-}
-@media (min-width: 992px) {
-  .Pantalla {
-    font-size: 4em !important;
-  }
-}
-@media (min-width: 1200px) {
-  .Pantalla {
-    font-size: 5em !important;
-  }
-}
-.Resumen {
-  grid-column: 1/span 4;
-  text-align: right !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (min-width: 576px) {
-  .Resumen {
-    font-size: 1.3em !important;
-  }
-}
-@media (min-width: 768px) {
-  .Resumen {
-    font-size: 1.6em !important;
-  }
-}
-@media (min-width: 992px) {
-  .Resumen {
-    font-size: 1.6em !important;
-  }
-}
-@media (min-width: 1200px) {
-  .Resumen {
-    font-size: 2.2em !important;
-  }
-}
-.btnDigito {
-  color: navy;
-  width: 100%;
-  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-@media (min-width: 576px) {
-  .btnDigito {
-    font-size: 1.3em !important;
-  }
-}
-@media (min-width: 768px) {
-  .btnDigito {
-    font-size: 1.6em !important;
-  }
-}
-@media (min-width: 992px) {
-  .btnDigito {
-    font-size: 1.6em !important;
-  }
-}
-@media (min-width: 1200px) {
-  .btnDigito {
-    font-size: 2.2em !important;
-  }
-}
-.btnOperar {
-  color: red;
-  width: 100%;
-  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-@media (min-width: 576px) {
-  .btnOperar {
-    font-size: 1.3em !important;
-  }
-}
-@media (min-width: 768px) {
-  .btnOperar {
-    font-size: 1.6em !important;
-  }
-}
-@media (min-width: 992px) {
-  .btnOperar {
-    font-size: 1.9em !important;
-  }
-}
-@media (min-width: 1200px) {
-  .btnOperar {
-    font-size: 2.2em !important;
-  }
+.calculadora {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
-.col-1x2 {
-  grid-column: 1 / span 2;
+.display {
+    width: 100%;
+    padding: 20px;
+    font-size: 2em;
+    text-align: right;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 
-.col-2x2 {
-  grid-column: 2 / span 2;
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.button {
+    padding: 20px;
+    font-size: 1.5em;
+    border-radius: 5px;
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
+
+.button.operator {
+    background-color: #ff9500;
+    color: white;
+}
+
+.button.equal {
+    background-color: #4caf50;
+    color: white;
+    grid-column: span 2;
+}
+
+.button.clear {
+    background-color: #f44336;
+    color: white;
 }
