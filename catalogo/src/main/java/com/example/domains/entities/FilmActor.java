@@ -83,7 +83,7 @@ public class FilmActor implements Serializable {
 	}
 
 	@PrePersist
-	private void prePersiste() {
+	void prePersiste() {
 		if (id == null) {
 			setId(new FilmActorPK(film.getFilmId(), actor.getActorId()));
 		}

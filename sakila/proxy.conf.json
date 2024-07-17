@@ -1,7 +1,7 @@
 {
   "/api/catalogo/": {
     "target": "http://localhost:8010",
-    "pathRewrite": { "^/api/catalogo": "/" },
+    "pathRewrite": { "^/api/catalogo": "/api" },
     "secure": false,
     "logLevel": "debug"
   },
