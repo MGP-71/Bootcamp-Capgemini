@@ -6,30 +6,60 @@
     margin-bottom: 20px;
   }
   
-  /* Estilos para ActoresListComponent */
-  .app-actores-list {
+  /* Estilos para IdiomasListComponent */
+  .app-idiomas-list {
     background-color: #f0f0f0;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px 0;
   }
   
-  /* Estilos para ActoresAddComponent y ActoresEditComponent */
-  .app-actores-form {
+  .app-idiomas-list h2 {
+    color: #333;
+    margin-top: 0;
+  }
+  
+  .app-idiomas-list p {
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .app-idiomas-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .app-idiomas-list li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .app-idiomas-list li:hover {
+    transform: translateY(-5px); /* Efecto de levantamiento al pasar el ratón */
+  }
+  
+  /* Estilos para IdiomasAddComponent y IdiomasEditComponent */
+  .app-idiomas-form {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px 0;
   }
   
-  .app-actores-form label {
+  .app-idiomas-form label {
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
   }
   
-  .app-actores-form input[type="text"],
-  .app-actores-form textarea {
+  .app-idiomas-form input[type="text"],
+  .app-idiomas-form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -37,7 +67,7 @@
     border-radius: 5px;
   }
   
-  .app-actores-form button {
+  .app-idiomas-form button {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -46,29 +76,30 @@
     cursor: pointer;
   }
   
-  .app-actores-form button:hover {
+  .app-idiomas-form button:hover {
     background-color: #0056b3;
   }
   
-  /* Estilos para ActoresViewComponent */
-  .app-actores-view {
+  /* Estilos para IdiomasViewComponent */
+  .app-idiomas-view {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px 0;
   }
   
-  .app-actores-view h2 {
+  .app-idiomas-view h2 {
     color: #333;
     margin-top: 0;
   }
   
-  .app-actores-view p {
+  .app-idiomas-view p {
     color: #666;
     line-height: 1.5;
   }
   
-  .app-actores-view .btn-back {
+  .app-idiomas-view .btn-back {
     background-color: #6c757d;
     color: #fff;
     border: none;
@@ -77,8 +108,7 @@
     cursor: pointer;
   }
   
-  .app-actores-view .btn-back:hover {
+  .app-idiomas-view .btn-back:hover {
     background-color: #5a6268;
   }
-  
   
