@@ -54,7 +54,7 @@ export class ContactosDAOService extends RESTDAOService<any, number> {
   constructor() {
     super('contactos', { context: new HttpContext().set(AUTH_REQUIRED, true) });
   }
-  page(page: number, rows: number = 20): Observable<{ page: number, pages: number, rows: number, list: Array<any> }> {
+  page(page: number, rows: number = 20): Observable<{ page: number, pages: number, rows: number, list: any[] }> {
     return new Observable(subscriber => {
       const url = `${this.baseUrl}?_page=${page}&_rows=${rows}&_sort=nombre,apellidos`
       this.http.get<any>(url, this.option).subscribe({
@@ -70,10 +70,9 @@ export class ContactosDAOService extends RESTDAOService<any, number> {
 })
 export class ContactosViewModelService {
   protected modo: ModoCRUD = 'list';
-  protected listado: Array<IContacto> = [];
+  protected listado: IContacto[] = [];
   protected elemento: IContacto = {};
   protected idOriginal?: number;
-  protected listURL = '/contactos';
 
   constructor(protected notify: NotificationService,
     protected out: LoggerService,

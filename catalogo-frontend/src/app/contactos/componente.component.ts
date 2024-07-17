@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges, forwardRef } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap, RouterLink } from '@angular/router';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DatePipe, NgIf, } from '@angular/common';
+import { DatePipe, } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
 import { ErrorMessagePipe, TypeValidator } from '@my/core';
 import { ContactosViewModelService } from './servicios.service';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-contactos-list',
@@ -48,24 +44,16 @@ export class ContactosAddComponent implements OnInit {
     standalone: true,
     imports: [FormsModule, TypeValidator, ErrorMessagePipe]
 })
-export class ContactosEditComponent implements OnInit, OnDestroy {
-  private obs$?: Subscription;
-  constructor(protected vm: ContactosViewModelService,
-    protected route: ActivatedRoute, protected router: Router) { }
+export class ContactosEditComponent implements OnChanges {
+  @Input() id?: string;
+  constructor(protected vm: ContactosViewModelService, protected router: Router) { }
   public get VM(): ContactosViewModelService { return this.vm; }
-  ngOnInit(): void {
-    this.obs$ = this.route.paramMap.subscribe(
-      (params: ParamMap) => {
-        const id = parseInt(params?.get('id') ?? '');
-        if (id) {
-          this.vm.edit(id);
-        } else {
-          this.router.navigate(['/404.html']);
-        }
-      });
-  }
-  ngOnDestroy(): void {
-    this.obs$!.unsubscribe();
+  ngOnChanges(_changes: SimpleChanges): void {
+    if (this.id) {
+      this.vm.view(+this.id);
+    } else {
+      this.router.navigate(['/404.html']);
+    }
   }
 }
 @Component({
